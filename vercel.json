@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "api/send-otp.js",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "api/verify-otp.js",
+        "use": "@vercel/node"
+      }
+    ]
+  }  
