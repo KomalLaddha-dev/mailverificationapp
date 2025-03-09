@@ -9,5 +9,8 @@
         "src": "api/verify-otp.js",
         "use": "@vercel/node"
       }
-    ]
-  }  
+    ],
+    "env": {
+    "SENDGRID_API_KEY": "@sendgrid_api_key"
+  }
+  }
