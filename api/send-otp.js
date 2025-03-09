@@ -1,9 +1,15 @@
 const sendgrid = require('@sendgrid/mail');
 const crypto = require('crypto');
-const { kv } = require('@vercel/kv'); // Import Vercel KV client
+const { Redis } = require('@upstash/redis'); // Upstash Redis client
 
 // Set SendGrid API Key
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+// Upstash Redis URL and Token from Upstash Dashboard
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL,  // Add your Upstash Redis URL here
+  token: process.env.KV_REST_API_TOKEN,  // Add your Upstash Redis Token here
+});
 
 // OTP expiration time: 10 minutes (600000 ms)
 const OTP_EXPIRATION_TIME = 10 * 60 * 1000;
@@ -27,8 +33,8 @@ module.exports = async (req, res) => {
     const otp = crypto.randomBytes(3).toString('hex'); // Generates 6-character OTP (3 bytes => 6 hex chars)
     const expiration = Date.now() + OTP_EXPIRATION_TIME;
 
-    // Store OTP in Vercel KV with email as the key and expiration time
-    await kv.set(email, JSON.stringify({ otp, expiration }));
+    // Store OTP in Upstash Redis with email as the key and expiration time
+    await redis.set(email, JSON.stringify({ otp, expiration }), { ex: OTP_EXPIRATION_TIME / 1000 }); // Set expiration in seconds
 
     // Prepare SendGrid email message
     const message = {

@@ -1,4 +1,10 @@
-const { kv } = require('@vercel/kv'); // Import Vercel KV client
+const { Redis } = require('@upstash/redis'); // Upstash Redis client
+
+// Upstash Redis URL and Token from Upstash Dashboard
+const redis = new Redis({
+  url: process.env.KV_REST_API_URL,  // Add your Upstash Redis URL here
+  token: process.env.KV_REST_API_TOKEN,  // Add your Upstash Redis Token here
+});
 
 module.exports = async (req, res) => {
   try {
@@ -15,8 +21,8 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
-    // Retrieve the OTP for the provided email from Vercel KV
-    const storedOtpData = await kv.get(email);
+    // Retrieve the OTP for the provided email from Upstash Redis
+    const storedOtpData = await redis.get(email);
 
     if (!storedOtpData) {
       console.error(`No OTP found for email: ${email}`);
@@ -34,8 +40,8 @@ module.exports = async (req, res) => {
 
     // Verify OTP
     if (storedOtp.otp === otp) {
-      // OTP is valid, delete it from KV after verification for security purposes
-      await kv.del(email);
+      // OTP is valid, delete it from Redis after verification for security purposes
+      await redis.del(email);
       console.log(`OTP verified successfully for email: ${email}`);
       return res.status(200).json({ message: 'OTP Verified' });
     } else {
