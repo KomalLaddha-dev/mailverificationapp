@@ -1,8 +1,16 @@
-// api/verify-otp.js
 const { otps } = require('./send-otp.js'); // Import the in-memory store
 
 module.exports = async (req, res) => {
-  const { email, otp } = req.body;
+  // Manually parse the incoming JSON request body
+  let body;
+  try {
+    body = JSON.parse(req.body); // Manually parse the body
+  } catch (error) {
+    console.error("Error parsing body:", error);
+    return res.status(400).json({ error: 'Invalid JSON in request body' });
+  }
+
+  const { email, otp } = body;
 
   if (!email || !otp) {
     return res.status(400).json({ error: 'Email and OTP are required' });
