@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
 
     try {
       await sendgrid.send(message);
-      console.log('OTP ', otp);
+      console.log('OTP ', otp, 'Email', email);
       return res.status(200).json({ message: 'OTP Sent' });
     } catch (error) {
       console.error(error);
