@@ -3,8 +3,8 @@ const crypto = require('crypto');
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
-const OTP_EXPIRATION_TIME = 5 * 60 * 1000; // OTP expiration time: 5 minutes
-const otps = {}; // In-memory store for OTPs
+const OTP_EXPIRATION_TIME = 10 * 60 * 1000; // OTP expiration time: 5 minutes
+let otps = {};
 
 module.exports = async (req, res) => {
   try {
@@ -25,7 +25,10 @@ module.exports = async (req, res) => {
     const expiration = Date.now() + OTP_EXPIRATION_TIME;
 
     // Store OTP and expiration time in memory (use a DB for persistence)
-    otps[email] = { otp, expiration };
+    otps[email] = {
+        otp: otp,
+        expiration: expiration,
+      };
 
     const message = {
       to: email,
