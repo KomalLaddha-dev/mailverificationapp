@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
 
   const message = {
     to: email,
-    from: 'your-email@example.com', // Make sure to use a verified sender
+    from: 'laddhakp@rknec.edu', // Make sure to use a verified sender
     subject: 'Your OTP Code',
     text: `Your OTP code is: ${otp}`,
     html: `<strong>Your OTP code is: ${otp}</strong>`,
