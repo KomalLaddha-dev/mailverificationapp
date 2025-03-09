@@ -2,10 +2,12 @@
 const sendgrid = require('@sendgrid/mail');
 const crypto = require('crypto');
 
+// Use SendGrid API key from environment variables
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
-const OTP_EXPIRATION_TIME = 5 * 60 * 1000; // OTP expiration time: 5 minutes
-const otps = {}; 
+// OTP expiration time (5 minutes)
+const OTP_EXPIRATION_TIME = 5 * 60 * 1000;
+const otps = {}; // Temporary in-memory OTP storage (Use a DB for production)
 
 module.exports = async (req, res) => {
   const { email } = req.body;
@@ -18,12 +20,12 @@ module.exports = async (req, res) => {
   const otp = crypto.randomBytes(3).toString('hex'); // 6-digit OTP
   const expiration = Date.now() + OTP_EXPIRATION_TIME;
 
-  // Store OTP and expiration in memory (you should use a database for persistence)
+  // Store OTP and expiration in memory (use a DB for production)
   otps[email] = { otp, expiration };
 
   const message = {
     to: email,
-    from: 'your-email@example.com', // Make sure to use a verified sender
+    from: 'your-email@example.com', // Use your verified SendGrid sender email
     subject: 'Your OTP Code',
     text: `Your OTP code is: ${otp}`,
     html: `<strong>Your OTP code is: ${otp}</strong>`,

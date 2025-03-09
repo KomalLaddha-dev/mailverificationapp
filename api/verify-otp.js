@@ -14,10 +14,12 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'OTP not found for this email' });
   }
 
+  // Check if OTP is expired
   if (Date.now() > storedOtp.expiration) {
     return res.status(400).json({ error: 'OTP Expired' });
   }
 
+  // Verify the OTP
   if (storedOtp.otp === otp) {
     return res.status(200).json({ message: 'OTP Verified' });
   } else {
