@@ -1,6 +1,9 @@
 const { otps } = require('./send-otp.js'); // Import the in-memory store
 
 module.exports = async (req, res) => {
+  // Log the raw request body to check if it is coming in as expected
+  console.log("Raw body:", req.body);
+
   // Manually parse the incoming JSON request body
   let body;
   try {
