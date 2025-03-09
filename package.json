@@ -2,9 +2,16 @@
     "name": "vercel-email-backend",
     "version": "1.0.0",
     "dependencies": {
-        "@sendgrid/mail": "^7.7.0"
+        "@sendgrid/mail": "^7.7.0",
+        "express": "^4.21.2"
     },
     "scripts": {
         "deploy": "vercel --prod"
-    }
+    },
+    "description": "",
+    "main": "index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs"
 }
