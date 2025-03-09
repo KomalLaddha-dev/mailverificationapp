@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
 
   const message = {
     to: email,
-    from: 'your-email@example.com', // Use your verified SendGrid sender email
+    from: 'laddhakp@rknec.edu', // Use your verified SendGrid sender email
     subject: 'Your OTP Code',
     text: `Your OTP code is: ${otp}`,
     html: `<strong>Your OTP code is: ${otp}</strong>`,
